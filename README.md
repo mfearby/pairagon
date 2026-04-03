@@ -1,6 +1,7 @@
 # Pairagon
 
 ![Pairagon](frontend/src/assets/pairagon-wide.png)
+
 *Image generated using Google Gemini 3 Flash*
 
 A simple task list for software development teams. At the start of each day, use Pairagon to define tasks for the current sprint and assign developers — either manually or by random pairing. Tasks can be dragged to reflect priority order, and assignments can be one developer, a pair, or the whole team.
