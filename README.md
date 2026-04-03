@@ -2,6 +2,8 @@
 
 A web-based standup board for software development teams. At the start of each day, teams use Pairagon to define tasks for the current sprint and assign developers to them — either manually or by random pairing. Tasks can be dragged to reflect priority order, and assignments can be one developer, a pair, or the whole team. Multiple teams are supported independently.
 
+Created using [Kiro](https://kiro.dev/) to learn how to use it.
+
 ## Stack
 
 - Frontend: React + TypeScript + Vite + Mantine
