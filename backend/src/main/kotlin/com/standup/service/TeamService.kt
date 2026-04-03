@@ -16,44 +16,54 @@ import org.springframework.transaction.annotation.Transactional
 class TeamService(
     private val teamRepo: TeamRepository,
     private val memberRepo: MemberRepository,
-    private val taskRepo: TaskRepository
+    private val taskRepo: TaskRepository,
 ) {
-
     // --- Teams ---
 
     fun listTeams(): List<TeamDto> = teamRepo.findAll().map { it.toDto() }
 
-    fun getTeam(id: Long): TeamDetailDto =
-        teamRepo.findByIdOrNull(id)?.toDetailDto() ?: throw NoSuchElementException("Team $id not found")
+    fun getTeam(id: Long): TeamDetailDto = teamRepo.findByIdOrNull(id)?.toDetailDto() ?: throw NoSuchElementException("Team $id not found")
 
-    fun createTeam(req: CreateTeamRequest): TeamDto =
-        teamRepo.save(Team(name = req.name)).toDto()
+    fun createTeam(req: CreateTeamRequest): TeamDto = teamRepo.save(Team(name = req.name)).toDto()
 
     fun deleteTeam(id: Long) = teamRepo.deleteById(id)
 
     // --- Members ---
 
-    fun addMember(teamId: Long, req: CreateMemberRequest): MemberDto {
+    fun addMember(
+        teamId: Long,
+        req: CreateMemberRequest,
+    ): MemberDto {
         val team = teamRepo.findByIdOrNull(teamId) ?: throw NoSuchElementException("Team $teamId not found")
         return memberRepo.save(Member(name = req.name, team = team)).toDto()
     }
 
-    fun removeMember(teamId: Long, memberId: Long) = memberRepo.deleteById(memberId)
+    fun removeMember(
+        teamId: Long,
+        memberId: Long,
+    ) = memberRepo.deleteById(memberId)
 
     // --- Tasks ---
 
-    fun createTask(teamId: Long, req: CreateTaskRequest): TaskDto {
+    fun createTask(
+        teamId: Long,
+        req: CreateTaskRequest,
+    ): TaskDto {
         val team = teamRepo.findByIdOrNull(teamId) ?: throw NoSuchElementException("Team $teamId not found")
         val maxPosition = taskRepo.findAllByTeamId(teamId).maxOfOrNull { it.position } ?: -1
         return taskRepo.save(Task(name = req.name, description = req.description, position = maxPosition + 1, team = team)).toDto()
     }
 
-    fun updateTask(taskId: Long, req: UpdateTaskRequest): TaskDto {
+    fun updateTask(
+        taskId: Long,
+        req: UpdateTaskRequest,
+    ): TaskDto {
         val task = taskRepo.findByIdOrNull(taskId) ?: throw NoSuchElementException("Task $taskId not found")
-        val updated = task.copy(
-            name = req.name ?: task.name,
-            description = req.description ?: task.description
-        )
+        val updated =
+            task.copy(
+                name = req.name ?: task.name,
+                description = req.description ?: task.description,
+            )
         return taskRepo.save(updated).toDto()
     }
 
@@ -65,7 +75,10 @@ class TeamService(
 
     fun deleteTask(taskId: Long) = taskRepo.deleteById(taskId)
 
-    fun reorderTasks(teamId: Long, req: ReorderTasksRequest) {
+    fun reorderTasks(
+        teamId: Long,
+        req: ReorderTasksRequest,
+    ) {
         req.orderedIds.forEachIndexed { index, taskId ->
             val task = taskRepo.findByIdOrNull(taskId) ?: return@forEachIndexed
             task.position = index
@@ -75,7 +88,10 @@ class TeamService(
 
     // --- Assignments ---
 
-    fun assignMembers(taskId: Long, req: AssignMembersRequest): TaskDto {
+    fun assignMembers(
+        taskId: Long,
+        req: AssignMembersRequest,
+    ): TaskDto {
         val task = taskRepo.findByIdOrNull(taskId) ?: throw NoSuchElementException("Task $taskId not found")
         val members = memberRepo.findAllById(req.memberIds)
         task.assignees.clear()

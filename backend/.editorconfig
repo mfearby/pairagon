@@ -1,0 +1,3 @@
+[*.kt]
+indent_size = 4
+ktlint_standard_no-wildcard-imports = disabled
