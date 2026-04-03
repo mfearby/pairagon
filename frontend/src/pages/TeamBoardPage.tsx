@@ -77,17 +77,16 @@ function SortableTaskCard({
       </Group>
       <MultiSelect
         mt="sm"
+        color="indigo"
+        styles={{
+          pill: { backgroundColor: '#ABC8ED', color: '#000' }
+        }}
         placeholder="Assign developers..."
         data={members.map(m => ({ value: String(m.id), label: m.name }))}
         value={task.assignees.map(a => String(a.id))}
         onChange={handleAssign}
         renderOption={({ option }) => <Text size="sm">{option.label}</Text>}
       />
-      {task.assignees.length > 0 && (
-        <Group mt="xs" gap="xs">
-          {task.assignees.map(a => <Badge key={a.id} variant="light">{a.name}</Badge>)}
-        </Group>
-      )}
     </div>
   )
 }
