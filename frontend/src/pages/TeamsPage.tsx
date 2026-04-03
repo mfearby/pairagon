@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { Stack, Title, Button, TextInput, Card, Group, Text, ActionIcon } from '@mantine/core'
+import { Stack, Title, Button, TextInput, Card, Group, Text, ActionIcon, Image, Center } from '@mantine/core'
 import { IconTrash, IconSettings } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 import { notifications } from '@mantine/notifications'
 import { api } from '../api'
 import type { Team } from '../types'
+import wideLogo from '../assets/pairagon-wide.png'
 
 export default function TeamsPage() {
   const [teams, setTeams] = useState<Team[]>([])
@@ -36,6 +37,9 @@ export default function TeamsPage() {
 
   return (
     <Stack maw={600} mx="auto">
+      <Center mb="md">
+        <Image src={wideLogo} w={512} h={364} fit="contain" />
+      </Center>
       <Title order={2}>Teams</Title>
       <Group>
         <TextInput
