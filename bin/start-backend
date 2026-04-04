@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+echo 'Starting back-end...'
+cd backend
+./gradlew bootRun

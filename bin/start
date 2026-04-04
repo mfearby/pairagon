@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+# Script uses tmux multiplexer to have two sessions in one Terminal tab/window
+# "sudo apt install tmux" if you don't have it already.
+
+# FYI: To switch panes: Ctrl+B then use arrow keys
+#      Ctrl+D to quit the pane which has focus
+
+SESSION="Pairagon"
+
+# Check if the session already exists
+tmux has-session -t $SESSION 2>/dev/null
+
+# Start session and start everything if session does not exist
+if [ $? != 0 ]; then
+    bin/start-postgres
+
+    # Create a new detached session (-d)
+    tmux new-session -d -s $SESSION
+
+    # Split the window (horizontal split, resulting in a vertical splitter that goes left/right)
+    tmux split-window -h -t $SESSION
+
+    # Send commands to specific panes (C-m is "Enter")
+    tmux send-keys -t $SESSION:0.0 "bin/start-backend" C-m
+    tmux send-keys -t $SESSION:0.1 "bin/start-frontend" C-m
+fi
+
+tmux attach-session -t $SESSION

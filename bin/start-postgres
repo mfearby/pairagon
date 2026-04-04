@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# If current directory is this folder, change up one level where the docker-compose.yml lives
+[[ "$PWD" == */bin ]] && cd ..
+
+echo 'Starting Postgres...'
+sudo docker compose up -d postgres
