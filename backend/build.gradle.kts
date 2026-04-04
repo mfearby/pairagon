@@ -32,3 +32,7 @@ dependencies {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+ktlint {
+    version.set("1.3.1")
+}

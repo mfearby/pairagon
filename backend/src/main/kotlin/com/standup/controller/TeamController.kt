@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/teams")
-class TeamController(private val service: TeamService) {
+class TeamController(
+    private val service: TeamService,
+) {
     @GetMapping
     fun listTeams() = service.listTeams()
 

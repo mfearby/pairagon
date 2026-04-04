@@ -6,21 +6,38 @@ import com.standup.domain.Team
 
 // --- Request DTOs ---
 
-data class CreateTeamRequest(val name: String)
+data class CreateTeamRequest(
+    val name: String,
+)
 
-data class CreateMemberRequest(val name: String)
+data class CreateMemberRequest(
+    val name: String,
+)
 
-data class CreateTaskRequest(val name: String, val description: String? = null)
+data class CreateTaskRequest(
+    val name: String,
+    val description: String? = null,
+)
 
-data class UpdateTaskRequest(val name: String? = null, val description: String? = null)
+data class UpdateTaskRequest(
+    val name: String? = null,
+    val description: String? = null,
+)
 
-data class ReorderTasksRequest(val orderedIds: List<Long>)
+data class ReorderTasksRequest(
+    val orderedIds: List<Long>,
+)
 
-data class AssignMembersRequest(val memberIds: List<Long>)
+data class AssignMembersRequest(
+    val memberIds: List<Long>,
+)
 
 // --- Response DTOs ---
 
-data class MemberDto(val id: Long, val name: String)
+data class MemberDto(
+    val id: Long,
+    val name: String,
+)
 
 data class TaskDto(
     val id: Long,
@@ -31,7 +48,10 @@ data class TaskDto(
     val assignees: List<MemberDto>,
 )
 
-data class TeamDto(val id: Long, val name: String)
+data class TeamDto(
+    val id: Long,
+    val name: String,
+)
 
 data class TeamDetailDto(
     val id: Long,
