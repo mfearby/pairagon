@@ -1,10 +1,9 @@
 package com.standup.controller
 
-import com.standup.dto.CreateTeamRequest
-import com.standup.service.TeamService
+import com.standup.dto.CreateMemberRequest
+import com.standup.service.MemberService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -14,20 +13,20 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/teams")
-class TeamController(
-    private val service: TeamService,
+class MemberController(
+    private val service: MemberService,
 ) {
-    @GetMapping
-    fun listTeams() = service.listTeams()
-
-    @GetMapping("/{id}")
-    fun getTeam(@PathVariable id: Long) = service.getTeam(id)
-
-    @PostMapping
+    @PostMapping("/{teamId}/members")
     @ResponseStatus(HttpStatus.CREATED)
-    fun createTeam(@RequestBody req: CreateTeamRequest) = service.createTeam(req)
+    fun addMember(
+        @PathVariable teamId: Long,
+        @RequestBody req: CreateMemberRequest,
+    ) = service.addMember(teamId, req)
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{teamId}/members/{memberId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteTeam(@PathVariable id: Long) = service.deleteTeam(id)
+    fun removeMember(
+        @PathVariable teamId: Long,
+        @PathVariable memberId: Long,
+    ) = service.removeMember(memberId)
 }
