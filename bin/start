@@ -13,6 +13,7 @@ tmux has-session -t $SESSION 2>/dev/null
 
 # Start session and start everything if session does not exist
 if [ $? != 0 ]; then
+    # Assumes you started via "bin/start" in the parent directory!
     bin/start-postgres
 
     # Create a new detached session (-d)

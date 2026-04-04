@@ -14,7 +14,30 @@ Created using [Kiro](https://kiro.dev/) to learn how to use it.
 - Backend: Kotlin + Spring Boot 3.5 + Java 21
 - Database: PostgreSQL
 
-## Getting started
+## Start and stop everything
+
+This will start the database in docker, then the back-end and front-end in a Terminal, with both processes visible in a [tmux](https://github.com/tmux/tmux/wiki) pane together in the same session.
+
+```bash
+# From the pairagon project root:
+bin/start
+```
+
+To stop everything, run:
+
+```bash
+bin/stop
+```
+
+Or Ctrl+C the processes in the tmux session then Ctrl+D to close each tmux pane, then stop the database manually:
+
+```bash
+sudo docker compose stop postgres
+```
+
+To switch between tmux panes, press Ctrl+B then use arrow keys.
+
+## Start Database, back-end and front-end individually
 
 ### 1. Start the database
 
@@ -41,7 +64,7 @@ npm run dev
 
 Runs on `http://localhost:5173`
 
-## Running everything with Docker
+## Run everything in Docker
 
 ```bash
 docker compose up --build

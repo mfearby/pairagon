@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# Front-end
+pkill -f "vite"
+
+# Back-end (or pkill -f bootRun)
+pkill -f "standup"
+
+# Database
+sudo docker compose stop postgres
+
+

@@ -3,5 +3,6 @@
 # If current directory is this folder, change up one level where the docker-compose.yml lives
 [[ "$PWD" == */bin ]] && cd ..
 
+# Does not start additional instances if it's already running
 echo 'Starting Postgres...'
 sudo docker compose up -d postgres
