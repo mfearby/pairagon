@@ -1,0 +1,4 @@
+.task-assignees .mantine-Pill-root:hover {
+    background-color: rgb(25, 113, 194) !important;
+    cursor: pointer;
+}

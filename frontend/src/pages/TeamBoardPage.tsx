@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import './TeamBoardPage.css'
 import {
     Stack,
     Title,
@@ -147,6 +148,7 @@ function SortableTaskCard({
             <MultiSelect
                 mt="sm"
                 color="indigo"
+                classNames={{ root: 'task-assignees' }}
                 styles={{
                     pill: { backgroundColor: '#1864ab', color: '#fff', fontSize: '1rem' },
                 }}
