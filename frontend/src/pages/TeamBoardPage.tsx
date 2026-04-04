@@ -148,7 +148,7 @@ function SortableTaskCard({
                 mt="sm"
                 color="indigo"
                 styles={{
-                    pill: { backgroundColor: '#ABC8ED', color: '#000' },
+                    pill: { backgroundColor: '#1864ab', color: '#fff', fontSize: '1rem' },
                 }}
                 placeholder="Assign developers..."
                 data={members.map((m) => ({
@@ -200,7 +200,7 @@ export default function TeamBoardPage() {
                 id,
                 reordered.map((t) => t.id)
             )
-        } catch {
+        } catch (err) {
             notifications.show({
                 message: 'Failed to save order',
                 color: 'red',
