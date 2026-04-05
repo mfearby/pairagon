@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { ActionIcon, Group, MultiSelect, Stack, Text, TextInput, Textarea } from '@mantine/core'
+import { modals } from '@mantine/modals'
 import { notifications } from '@mantine/notifications'
 import { IconCheck, IconGripVertical, IconPencil, IconTrash, IconX } from '@tabler/icons-react'
 import { useSortable } from '@dnd-kit/sortable'
@@ -33,12 +34,20 @@ export default function SortableTaskCard({ task, teamId, members, onUpdate }: Pr
     }
 
     const handleDelete = async () => {
-        try {
-            await api.deleteTask(teamId, task.id)
-            onUpdate({ ...task, id: -task.id })
-        } catch {
-            notifications.show({ message: 'Failed to delete task', color: 'red' })
-        }
+        modals.openConfirmModal({
+            title: 'Delete task?',
+            children: `"${task.name}" will be permanently deleted.`,
+            labels: { confirm: 'Delete', cancel: 'Cancel' },
+            confirmProps: { color: 'red' },
+            onConfirm: async () => {
+                try {
+                    await api.deleteTask(teamId, task.id)
+                    onUpdate({ ...task, id: -task.id })
+                } catch {
+                    notifications.show({ message: 'Failed to delete task', color: 'red' })
+                }
+            },
+        })
     }
 
     const handleSaveEdit = async () => {
