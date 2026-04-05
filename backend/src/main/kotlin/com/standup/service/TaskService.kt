@@ -86,11 +86,12 @@ class TaskService(
             task.assignees.forEach { member -> assignmentCount[member.id] = (assignmentCount[member.id] ?: 0) + 1 }
         }
 
-        // pick the member with the least assignments (prefer zero)
-        fun pickLeastAssigned(exclude: Set<Long> = emptySet()) =
-            allMembers
-                .filter { it.id !in exclude }
-                .minByOrNull { assignmentCount[it.id] ?: 0 }
+        // pick the member with the least assignments (prefer zero), randomised among ties
+        fun pickLeastAssigned(exclude: Set<Long> = emptySet()): com.standup.domain.Member? {
+            val candidates = allMembers.filter { it.id !in exclude }
+            val minCount = candidates.minOfOrNull { assignmentCount[it.id] ?: 0 } ?: return null
+            return candidates.filter { (assignmentCount[it.id] ?: 0) == minCount }.random()
+        }
 
         tasks.forEach { task ->
             when (task.assignees.size) {
