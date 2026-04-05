@@ -2,4 +2,10 @@
 
 echo 'Starting back-end...'
 cd backend
-./gradlew bootRun
+
+# Unset SPRING_DATASOURCE_* because Spring Framework always prefers them,
+# regardless of what's specified in application.yml
+exec env -u SPRING_DATASOURCE_URL \
+  -u SPRING_DATASOURCE_USERNAME \
+  -u SPRING_DATASOURCE_PASSWORD \
+  ./gradlew bootRun

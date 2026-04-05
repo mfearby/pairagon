@@ -16,7 +16,7 @@ Created using [Kiro](https://kiro.dev/) to learn how to use it.
 
 ## Start and stop everything
 
-This will start the database in docker, then the back-end and front-end in a Terminal, with both processes visible in a [tmux](https://github.com/tmux/tmux/wiki) pane together in the same session.
+This will start the database in docker, then the back-end and front-end in a Terminal, with both processes visible in a [tmux](https://github.com/tmux/tmux/wiki/Installing) pane together in the same session. Use Ctrl+B (release both keys) then use arrow keys to switch between panes.
 
 ```bash
 # From the pairagon project root:

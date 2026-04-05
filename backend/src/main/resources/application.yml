@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/standup}
-    username: ${SPRING_DATASOURCE_USERNAME:standup}
-    password: ${SPRING_DATASOURCE_PASSWORD:standup}
+    url: ${PAIRAGON_DATASOURCE_URL:jdbc:postgresql://localhost:5432/standup}
+    username: ${PAIRAGON_DATASOURCE_USERNAME:standup}
+    password: ${PAIRAGON_DATASOURCE_PASSWORD:standup}
   jpa:
     hibernate:
       ddl-auto: update
