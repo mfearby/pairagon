@@ -31,7 +31,7 @@ class TaskService(
         val task = taskRepo.findByIdOrNull(taskId) ?: throw NoSuchElementException("Task $taskId not found")
         val updated = task.copy(
             name = req.name ?: task.name,
-            description = req.description ?: task.description,
+            description = if (req.description != null) req.description.ifBlank { null } else task.description,
         )
         return taskRepo.save(updated).toDto()
     }

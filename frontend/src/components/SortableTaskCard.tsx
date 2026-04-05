@@ -1,6 +1,7 @@
-import { ActionIcon, Group, MultiSelect, Stack, Text } from '@mantine/core'
+import { useState } from 'react'
+import { ActionIcon, Group, MultiSelect, Stack, Text, TextInput, Textarea } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
-import { IconCheck, IconGripVertical, IconTrash } from '@tabler/icons-react'
+import { IconCheck, IconGripVertical, IconPencil, IconTrash, IconX } from '@tabler/icons-react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { api } from '../api'
@@ -17,6 +18,10 @@ export default function SortableTaskCard({ task, teamId, members, onUpdate }: Pr
     const { attributes, listeners, setNodeRef, transform, transition } =
         useSortable({ id: task.id })
     const style = { transform: CSS.Transform.toString(transform), transition }
+
+    const [editing, setEditing] = useState(false)
+    const [editName, setEditName] = useState(task.name)
+    const [editDescription, setEditDescription] = useState(task.description ?? '')
 
     const handleAssign = async (memberIds: string[]) => {
         try {
@@ -45,6 +50,23 @@ export default function SortableTaskCard({ task, teamId, members, onUpdate }: Pr
         }
     }
 
+    const handleSaveEdit = async () => {
+        if (!editName.trim()) return
+        try {
+            const updated = await api.updateTask(teamId, task.id, editName.trim(), editDescription.trim())
+            onUpdate(updated)
+            setEditing(false)
+        } catch {
+            notifications.show({ message: 'Failed to update task', color: 'red' })
+        }
+    }
+
+    const handleCancelEdit = () => {
+        setEditName(task.name)
+        setEditDescription(task.description ?? '')
+        setEditing(false)
+    }
+
     return (
         <div
             ref={setNodeRef}
@@ -57,7 +79,7 @@ export default function SortableTaskCard({ task, teamId, members, onUpdate }: Pr
             }}
         >
             <Group justify="space-between" wrap="nowrap">
-                <Group gap="xs" wrap="nowrap">
+                <Group gap="xs" wrap="nowrap" style={{ flex: 1 }}>
                     <ActionIcon
                         variant="subtle"
                         size="sm"
@@ -67,20 +89,57 @@ export default function SortableTaskCard({ task, teamId, members, onUpdate }: Pr
                     >
                         <IconGripVertical size={16} />
                     </ActionIcon>
-                    <Stack gap={2}>
-                        <Text fw={500}>{task.name}</Text>
-                        {task.description && (
-                            <Text size="xs" c="dimmed">{task.description}</Text>
-                        )}
-                    </Stack>
+                    {editing ? (
+                        <Stack gap="xs" style={{ flex: 1 }}>
+                            <TextInput
+                                value={editName}
+                                onChange={(e) => setEditName(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' && handleSaveEdit()}
+                                placeholder="Task name"
+                                size="sm"
+                                autoFocus
+                            />
+                            <Textarea
+                                value={editDescription}
+                                onChange={(e) => setEditDescription(e.target.value)}
+                                placeholder="Description (optional)"
+                                size="sm"
+                                autosize
+                                minRows={2}
+                            />
+                        </Stack>
+                    ) : (
+                        <Stack gap={2}>
+                            <Text fw={500}>{task.name}</Text>
+                            {task.description && (
+                                <Text size="xs" c="dimmed">{task.description}</Text>
+                            )}
+                        </Stack>
+                    )}
                 </Group>
                 <Group gap="xs">
-                    <ActionIcon variant="subtle" color="green" title="Close task" onClick={handleClose}>
-                        <IconCheck size={16} />
-                    </ActionIcon>
-                    <ActionIcon variant="subtle" color="red" title="Delete task" onClick={handleDelete}>
-                        <IconTrash size={16} />
-                    </ActionIcon>
+                    {editing ? (
+                        <>
+                            <ActionIcon variant="subtle" color="green" title="Save" onClick={handleSaveEdit}>
+                                <IconCheck size={16} />
+                            </ActionIcon>
+                            <ActionIcon variant="subtle" color="gray" title="Cancel" onClick={handleCancelEdit}>
+                                <IconX size={16} />
+                            </ActionIcon>
+                        </>
+                    ) : (
+                        <>
+                            <ActionIcon variant="subtle" color="blue" title="Edit task" onClick={() => setEditing(true)}>
+                                <IconPencil size={16} />
+                            </ActionIcon>
+                            <ActionIcon variant="subtle" color="green" title="Close task" onClick={handleClose}>
+                                <IconCheck size={16} />
+                            </ActionIcon>
+                            <ActionIcon variant="subtle" color="red" title="Delete task" onClick={handleDelete}>
+                                <IconTrash size={16} />
+                            </ActionIcon>
+                        </>
+                    )}
                 </Group>
             </Group>
             <MultiSelect
