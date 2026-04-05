@@ -39,6 +39,11 @@ class TaskController(
         @PathVariable teamId: Long,
     ) = service.randomlyAssignAll(teamId)
 
+    @PutMapping("/{teamId}/tasks/smart-assign")
+    fun smartAddPairs(
+        @PathVariable teamId: Long,
+    ) = service.smartAddPairs(teamId)
+
     @PatchMapping("/{teamId}/tasks/{taskId}")
     fun updateTask(
         @PathVariable teamId: Long,

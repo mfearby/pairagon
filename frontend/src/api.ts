@@ -70,4 +70,6 @@ export const api = {
         }),
     randomizeAssignments: (teamId: number) =>
         request<Task[]>(`${BASE}/${teamId}/tasks/randomize`, { method: 'PUT' }),
+    smartAddPairs: (teamId: number) =>
+        request<Task[]>(`${BASE}/${teamId}/tasks/smart-assign`, { method: 'PUT' }),
 }

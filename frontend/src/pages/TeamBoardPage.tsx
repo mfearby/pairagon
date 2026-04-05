@@ -15,6 +15,7 @@ import {
     IconArrowLeft,
     IconSettings,
     IconArrowsShuffle,
+    IconUsersPlus,
 } from '@tabler/icons-react'
 import { notifications } from '@mantine/notifications'
 import {
@@ -91,6 +92,15 @@ export default function TeamBoardPage() {
         }
     }
 
+    const handleSmartAddPairs = async () => {
+        try {
+            const updated = await api.smartAddPairs(id)
+            setTasks(updated)
+        } catch {
+            notifications.show({ message: 'Failed to add pairs', color: 'red' })
+        }
+    }
+
     const handleRandomize = () => {
         modals.openConfirmModal({
             title: 'Randomize all pairs?',
@@ -140,13 +150,22 @@ export default function TeamBoardPage() {
 
             <Group justify="space-between">
                 <Title order={2}>{team.name}</Title>
-                <Button
-                    leftSection={<IconArrowsShuffle size={16} />}
-                    variant="light"
-                    onClick={handleRandomize}
-                >
-                    Randomize pairs
-                </Button>
+                <Group gap="xs">
+                    <Button
+                        leftSection={<IconUsersPlus size={16} />}
+                        variant="light"
+                        onClick={handleSmartAddPairs}
+                    >
+                        Add pairs
+                    </Button>
+                    <Button
+                        leftSection={<IconArrowsShuffle size={16} />}
+                        variant="light"
+                        onClick={handleRandomize}
+                    >
+                        Randomize pairs
+                    </Button>
+                </Group>
             </Group>
 
             <Group>
