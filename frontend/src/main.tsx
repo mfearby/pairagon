@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { MantineProvider } from '@mantine/core'
 import { Notifications } from '@mantine/notifications'
+import { ModalsProvider } from '@mantine/modals'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import '@mantine/core/styles.css'
@@ -30,8 +31,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                     primaryShade: { dark: 9 },
                 }}
             >
-                <Notifications />
-                <App />
+                <ModalsProvider>
+                    <Notifications />
+                    <App />
+                </ModalsProvider>
             </MantineProvider>
         </BrowserRouter>
     </React.StrictMode>

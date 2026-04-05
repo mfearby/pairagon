@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import './TeamBoardPage.css'
+import { modals } from '@mantine/modals'
 import {
     Stack,
     Title,
@@ -90,13 +91,21 @@ export default function TeamBoardPage() {
         }
     }
 
-    const handleRandomize = async () => {
-        try {
-            const updated = await api.randomizeAssignments(id)
-            setTasks(updated)
-        } catch {
-            notifications.show({ message: 'Failed to randomize', color: 'red' })
-        }
+    const handleRandomize = () => {
+        modals.openConfirmModal({
+            title: 'Randomize all pairs?',
+            children: 'This will replace all current developer assignments with randomly assigned pairs.',
+            labels: { confirm: 'Randomize', cancel: 'Cancel' },
+            confirmProps: { color: 'indigo' },
+            onConfirm: async () => {
+                try {
+                    const updated = await api.randomizeAssignments(id)
+                    setTasks(updated)
+                } catch {
+                    notifications.show({ message: 'Failed to randomize', color: 'red' })
+                }
+            },
+        })
     }
 
     const handleTaskUpdate = (updated: Task) => {
