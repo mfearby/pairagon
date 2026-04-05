@@ -27,8 +27,14 @@ class TaskService(
         return taskRepo.save(Task(name = req.name, description = req.description, position = maxPosition + 1, team = team)).toDto()
     }
 
-    fun updateTask(taskId: Long, req: UpdateTaskRequest): TaskDto {
+    private fun findTaskForTeam(teamId: Long, taskId: Long): Task {
         val task = taskRepo.findByIdOrNull(taskId) ?: throw NoSuchElementException("Task $taskId not found")
+        if (task.team.id != teamId) throw IllegalArgumentException("Task $taskId does not belong to team $teamId")
+        return task
+    }
+
+    fun updateTask(teamId: Long, taskId: Long, req: UpdateTaskRequest): TaskDto {
+        val task = findTaskForTeam(teamId, taskId)
         val updated = task.copy(
             name = req.name ?: task.name,
             description = if (req.description != null) req.description.ifBlank { null } else task.description,
@@ -36,7 +42,10 @@ class TaskService(
         return taskRepo.save(updated).toDto()
     }
 
-    fun deleteTask(taskId: Long) = taskRepo.deleteById(taskId)
+    fun deleteTask(teamId: Long, taskId: Long) {
+        findTaskForTeam(teamId, taskId)
+        taskRepo.deleteById(taskId)
+    }
 
     fun reorderTasks(req: ReorderTasksRequest) {
         req.orderedIds.forEachIndexed { index, taskId ->
@@ -46,8 +55,8 @@ class TaskService(
         }
     }
 
-    fun assignMembers(taskId: Long, req: AssignMembersRequest): TaskDto {
-        val task = taskRepo.findByIdOrNull(taskId) ?: throw NoSuchElementException("Task $taskId not found")
+    fun assignMembers(teamId: Long, taskId: Long, req: AssignMembersRequest): TaskDto {
+        val task = findTaskForTeam(teamId, taskId)
         val members = memberRepo.findAllById(req.memberIds)
         task.assignees.clear()
         task.assignees.addAll(members)

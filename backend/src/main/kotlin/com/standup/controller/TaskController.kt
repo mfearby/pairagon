@@ -49,19 +49,19 @@ class TaskController(
         @PathVariable teamId: Long,
         @PathVariable taskId: Long,
         @RequestBody req: UpdateTaskRequest,
-    ) = service.updateTask(taskId, req)
+    ) = service.updateTask(teamId, taskId, req)
 
     @DeleteMapping("/{teamId}/tasks/{taskId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteTask(
         @PathVariable teamId: Long,
         @PathVariable taskId: Long,
-    ) = service.deleteTask(taskId)
+    ) = service.deleteTask(teamId, taskId)
 
     @PutMapping("/{teamId}/tasks/{taskId}/assignees")
     fun assignMembers(
         @PathVariable teamId: Long,
         @PathVariable taskId: Long,
         @RequestBody req: AssignMembersRequest,
-    ) = service.assignMembers(taskId, req)
+    ) = service.assignMembers(teamId, taskId, req)
 }
