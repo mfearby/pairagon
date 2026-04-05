@@ -9,9 +9,6 @@ backend/.gradle/
 backend/.kotlin/
 backend/out/
 
-# Gradle wrapper jar (properties file is kept, jar is downloaded)
-backend/gradle/wrapper/gradle-wrapper.jar
-
 # IDE
 .idea/
 .vscode/
