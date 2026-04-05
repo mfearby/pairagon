@@ -36,12 +36,6 @@ class TaskService(
         return taskRepo.save(updated).toDto()
     }
 
-    fun closeTask(taskId: Long): TaskDto {
-        val task = taskRepo.findByIdOrNull(taskId) ?: throw NoSuchElementException("Task $taskId not found")
-        task.closed = true
-        return taskRepo.save(task).toDto()
-    }
-
     fun deleteTask(taskId: Long) = taskRepo.deleteById(taskId)
 
     fun reorderTasks(req: ReorderTasksRequest) {

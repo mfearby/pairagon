@@ -32,19 +32,10 @@ export default function SortableTaskCard({ task, teamId, members, onUpdate }: Pr
         }
     }
 
-    const handleClose = async () => {
-        try {
-            await api.closeTask(teamId, task.id)
-            onUpdate({ ...task, closed: true })
-        } catch {
-            notifications.show({ message: 'Failed to close task', color: 'red' })
-        }
-    }
-
     const handleDelete = async () => {
         try {
             await api.deleteTask(teamId, task.id)
-            onUpdate({ ...task, closed: true, id: -task.id })
+            onUpdate({ ...task, id: -task.id })
         } catch {
             notifications.show({ message: 'Failed to delete task', color: 'red' })
         }
@@ -131,9 +122,6 @@ export default function SortableTaskCard({ task, teamId, members, onUpdate }: Pr
                         <>
                             <ActionIcon variant="subtle" color="blue" title="Edit task" onClick={() => setEditing(true)}>
                                 <IconPencil size={16} />
-                            </ActionIcon>
-                            <ActionIcon variant="subtle" color="green" title="Close task" onClick={handleClose}>
-                                <IconCheck size={16} />
                             </ActionIcon>
                             <ActionIcon variant="subtle" color="red" title="Delete task" onClick={handleDelete}>
                                 <IconTrash size={16} />

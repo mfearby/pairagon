@@ -44,7 +44,6 @@ data class TaskDto(
     val name: String,
     val description: String?,
     val position: Int,
-    val closed: Boolean,
     val assignees: List<MemberDto>,
 )
 
@@ -64,7 +63,7 @@ data class TeamDetailDto(
 
 fun Member.toDto() = MemberDto(id, name)
 
-fun Task.toDto() = TaskDto(id, name, description, position, closed, assignees.map { it.toDto() })
+fun Task.toDto() = TaskDto(id, name, description, position, assignees.map { it.toDto() })
 
 fun Team.toDto() = TeamDto(id, name)
 
@@ -73,5 +72,5 @@ fun Team.toDetailDto() =
         id,
         name,
         members.map { it.toDto() },
-        tasks.filter { !it.closed }.map { it.toDto() },
+        tasks.map { it.toDto() },
     )

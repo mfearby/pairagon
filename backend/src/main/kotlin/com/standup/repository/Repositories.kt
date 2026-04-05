@@ -13,7 +13,7 @@ interface MemberRepository : JpaRepository<Member, Long> {
 }
 
 interface TaskRepository : JpaRepository<Task, Long> {
-    @Query("SELECT t FROM Task t WHERE t.team.id = :teamId AND t.closed = false ORDER BY t.position ASC")
+    @Query("SELECT t FROM Task t WHERE t.team.id = :teamId ORDER BY t.position ASC")
     fun findOpenByTeamId(teamId: Long): List<Task>
 
     @Query("SELECT t FROM Task t WHERE t.team.id = :teamId ORDER BY t.position ASC")

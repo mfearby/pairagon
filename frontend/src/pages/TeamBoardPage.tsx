@@ -119,15 +119,10 @@ export default function TeamBoardPage() {
     }
 
     const handleTaskUpdate = (updated: Task) => {
-        if (updated.id < 0 || updated.closed) {
-            // closed or deleted — remove from view
-            setTasks((prev) =>
-                prev.filter((t) => t.id !== Math.abs(updated.id))
-            )
+        if (updated.id < 0) {
+            setTasks((prev) => prev.filter((t) => t.id !== Math.abs(updated.id)))
         } else {
-            setTasks((prev) =>
-                prev.map((t) => (t.id === updated.id ? updated : t))
-            )
+            setTasks((prev) => prev.map((t) => (t.id === updated.id ? updated : t)))
         }
     }
 

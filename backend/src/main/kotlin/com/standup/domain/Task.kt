@@ -12,8 +12,6 @@ data class Task(
     val description: String? = null,
     @Column(nullable = false)
     var position: Int = 0,
-    @Column(nullable = false)
-    var closed: Boolean = false,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id", nullable = false)
     val team: Team = Team(),

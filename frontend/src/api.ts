@@ -50,10 +50,6 @@ export const api = {
             method: 'PATCH',
             body: JSON.stringify({ name, description }),
         }),
-    closeTask: (teamId: number, taskId: number) =>
-        request<Task>(`${BASE}/${teamId}/tasks/${taskId}/close`, {
-            method: 'PATCH',
-        }),
     deleteTask: (teamId: number, taskId: number) =>
         request<void>(`${BASE}/${teamId}/tasks/${taskId}`, {
             method: 'DELETE',

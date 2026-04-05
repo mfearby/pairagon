@@ -8,7 +8,6 @@ export interface Task {
     name: string
     description: string | null
     position: number
-    closed: boolean
     assignees: Member[]
 }
 

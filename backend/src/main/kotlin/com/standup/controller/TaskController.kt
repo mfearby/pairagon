@@ -51,12 +51,6 @@ class TaskController(
         @RequestBody req: UpdateTaskRequest,
     ) = service.updateTask(taskId, req)
 
-    @PatchMapping("/{teamId}/tasks/{taskId}/close")
-    fun closeTask(
-        @PathVariable teamId: Long,
-        @PathVariable taskId: Long,
-    ) = service.closeTask(taskId)
-
     @DeleteMapping("/{teamId}/tasks/{taskId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteTask(
