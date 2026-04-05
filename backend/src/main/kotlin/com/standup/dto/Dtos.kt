@@ -14,6 +14,10 @@ data class CreateMemberRequest(
     val name: String,
 )
 
+data class UpdateMemberRequest(
+    val name: String,
+)
+
 data class CreateTaskRequest(
     val name: String,
     val description: String? = null,

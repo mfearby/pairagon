@@ -1,20 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import {
-    Stack,
-    Title,
-    Group,
-    TextInput,
-    Button,
-    Card,
-    Text,
-    ActionIcon,
-    Anchor,
-} from '@mantine/core'
-import { IconTrash, IconArrowLeft } from '@tabler/icons-react'
+import { Stack, Title, Group, TextInput, Button, Anchor } from '@mantine/core'
+import { IconArrowLeft } from '@tabler/icons-react'
 import { notifications } from '@mantine/notifications'
 import { api } from '../api'
-import type { TeamDetail } from '../types'
+import type { Member, TeamDetail } from '../types'
+import MemberRow from '../components/MemberRow'
 
 export default function TeamSettingsPage() {
     const { teamId } = useParams<{ teamId: string }>()
@@ -23,50 +14,32 @@ export default function TeamSettingsPage() {
     const [newMember, setNewMember] = useState('')
 
     useEffect(() => {
-        api.getTeam(id)
-            .then(setTeam)
-            .catch(() =>
-                notifications.show({
-                    message: 'Failed to load team',
-                    color: 'red',
-                })
-            )
+        api.getTeam(id).then(setTeam).catch(() =>
+            notifications.show({ message: 'Failed to load team', color: 'red' })
+        )
     }, [id])
 
     const handleAddMember = async () => {
         if (!newMember.trim() || !team) return
         try {
             const member = await api.addMember(id, newMember.trim())
-            setTeam((prev) =>
-                prev ? { ...prev, members: [...prev.members, member] } : prev
-            )
+            setTeam((prev) => prev ? { ...prev, members: [...prev.members, member] } : prev)
             setNewMember('')
         } catch {
-            notifications.show({
-                message: 'Failed to add member',
-                color: 'red',
-            })
+            notifications.show({ message: 'Failed to add member', color: 'red' })
         }
+    }
+
+    const handleUpdateMember = (updated: Member) => {
+        setTeam((prev) => prev ? { ...prev, members: prev.members.map((m) => m.id === updated.id ? updated : m) } : prev)
     }
 
     const handleRemoveMember = async (memberId: number) => {
         try {
             await api.removeMember(id, memberId)
-            setTeam((prev) =>
-                prev
-                    ? {
-                          ...prev,
-                          members: prev.members.filter(
-                              (m) => m.id !== memberId
-                          ),
-                      }
-                    : prev
-            )
+            setTeam((prev) => prev ? { ...prev, members: prev.members.filter((m) => m.id !== memberId) } : prev)
         } catch {
-            notifications.show({
-                message: 'Failed to remove member',
-                color: 'red',
-            })
+            notifications.show({ message: 'Failed to remove member', color: 'red' })
         }
     }
 
@@ -75,9 +48,7 @@ export default function TeamSettingsPage() {
     return (
         <Stack maw={500} mx="auto">
             <Anchor component={Link} to={`/teams/${id}`} size="sm">
-                <Group gap={4}>
-                    <IconArrowLeft size={14} /> Back to board
-                </Group>
+                <Group gap={4}><IconArrowLeft size={14} /> Back to board</Group>
             </Anchor>
             <Title order={2}>{team.name} — Settings</Title>
             <Title order={4}>Team Members</Title>
@@ -92,18 +63,13 @@ export default function TeamSettingsPage() {
                 <Button onClick={handleAddMember}>Add</Button>
             </Group>
             {team.members.map((member) => (
-                <Card key={member.id} withBorder py="xs">
-                    <Group justify="space-between">
-                        <Text>{member.name}</Text>
-                        <ActionIcon
-                            color="red"
-                            variant="subtle"
-                            onClick={() => handleRemoveMember(member.id)}
-                        >
-                            <IconTrash size={16} />
-                        </ActionIcon>
-                    </Group>
-                </Card>
+                <MemberRow
+                    key={member.id}
+                    member={member}
+                    teamId={id}
+                    onUpdate={handleUpdateMember}
+                    onRemove={handleRemoveMember}
+                />
             ))}
         </Stack>
     )

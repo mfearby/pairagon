@@ -33,6 +33,11 @@ export const api = {
         request<void>(`${BASE}/${teamId}/members/${memberId}`, {
             method: 'DELETE',
         }),
+    updateMember: (teamId: number, memberId: number, name: string) =>
+        request<Member>(`${BASE}/${teamId}/members/${memberId}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ name }),
+        }),
 
     // Tasks
     createTask: (teamId: number, name: string, description?: string) =>

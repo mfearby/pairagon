@@ -3,6 +3,7 @@ package com.standup.service
 import com.standup.domain.Member
 import com.standup.dto.CreateMemberRequest
 import com.standup.dto.MemberDto
+import com.standup.dto.UpdateMemberRequest
 import com.standup.dto.toDto
 import com.standup.repository.MemberRepository
 import com.standup.repository.TeamRepository
@@ -22,4 +23,9 @@ class MemberService(
     }
 
     fun removeMember(memberId: Long) = memberRepo.deleteById(memberId)
+
+    fun updateMember(memberId: Long, req: UpdateMemberRequest): MemberDto {
+        val member = memberRepo.findByIdOrNull(memberId) ?: throw NoSuchElementException("Member $memberId not found")
+        return memberRepo.save(member.copy(name = req.name)).toDto()
+    }
 }
