@@ -23,8 +23,8 @@ if [ $? != 0 ]; then
     tmux split-window -h -t $SESSION
 
     # Send commands to specific panes (C-m is "Enter")
-    tmux send-keys -t $SESSION:0.0 "bin/start-backend" C-m
-    tmux send-keys -t $SESSION:0.1 "bin/start-frontend" C-m
+    tmux send-keys -t $SESSION:0.0 "bin/start-frontend" C-m
+    tmux send-keys -t $SESSION:0.1 "bin/start-backend" C-m
 fi
 
 tmux attach-session -t $SESSION
